@@ -13,11 +13,11 @@ api_vip:10.87.65.251 #(VIP IP of Kubernetes API server)
 
 Steps to install once values are updated
 
-kubectl apply -f contrail/
+`kubectl apply -f contrail/`
 
 
 
-
+````
 
 ################ **INSTALL KUBERNESTES ON CENTOS**##########
 
@@ -94,3 +94,4 @@ echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 sleep 2
 systemctl restart docker && systemctl enable docker
 systemctl  restart kubelet && systemctl enable kubelet
+````
