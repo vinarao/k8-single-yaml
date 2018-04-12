@@ -1,0 +1,114 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env
+  namespace: kube-system
+data:
+  AAA_MODE: no-auth 
+  ANALYTICS_API_VIP: {{ contrail_vip }}
+  ANALYTICS_NODES: {{ contrail_nodes }}
+  ANALYTICSDB_NODES: {{ contrail_nodes }}
+  AUTH_MODE: noauth
+  CLOUD_ORCHESTRATOR: kubernetes
+  CONFIG_API_VIP: {{ contrail_vip }}
+  CONFIG_NODES: {{ contrail_nodes }}
+  CONFIGDB_NODES: {{ contrail_nodes }}
+  CONTROL_NODES: {{ contrail_nodes }}
+  CONTROLLER_NODES: {{ contrail_nodes }}
+  KAFKA_NODES: {{ contrail_nodes }}
+  LOG_LEVEL: SYS_LOG
+  METADATA_PROXY_SECRET: contrail
+  PHYSICAL_INTERFACE: {{ vrouter_physical_interface }}
+  RABBITMQ_NODES: {{ contrail_nodes }}
+  RABBITMQ_NODE_PORT: 5672
+  REDIS_NODES: {{ contrail_nodes }}
+  VROUTER_GATEWAY: 
+  WEBUI_NODES: {{ contrail_nodes }}
+  WEBUI_VIP: {{ contrail_vip }}
+  ZOOKEEPER_NODES: {{ contrail_nodes }}
+  KUBERNETES_API_SECURE_PORT: 6443
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nodemgr-config
+  namespace: kube-system
+data:
+  DOCKER_HOST: "unix://mnt/docker.sock"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: contrail-analyticsdb-config
+  namespace: kube-system
+data:
+  CASSANDRA_SEEDS: {{ contrail_nodes }}
+  CASSANDRA_CLUSTER_NAME: Contrail
+  CASSANDRA_START_RPC: "true"
+  CASSANDRA_LISTEN_ADDRESS: auto
+  CASSANDRA_PORT: "9160"
+  CASSANDRA_CQL_PORT: "9042"
+  CASSANDRA_SSL_STORAGE_PORT: "7001"
+  CASSANDRA_STORAGE_PORT: "7000"
+  CASSANDRA_JMX_LOCAL_PORT: "7200"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: contrail-configdb-config
+  namespace: kube-system
+data:
+  CASSANDRA_SEEDS: {{ contrail_nodes }}
+  CASSANDRA_CLUSTER_NAME: ContrailConfigDB
+  CASSANDRA_START_RPC: "true"
+  CASSANDRA_LISTEN_ADDRESS: auto
+  CASSANDRA_PORT: "9161"
+  CASSANDRA_CQL_PORT: "9041"
+  CASSANDRA_SSL_STORAGE_PORT: "7011"
+  CASSANDRA_STORAGE_PORT: "7010"
+  CASSANDRA_JMX_LOCAL_PORT: "7201"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-config
+  namespace: kube-system
+data:
+  RABBITMQ_NODES: {{ contrail_nodes }}
+  RABBITMQ_NODE_PORT: "5672"
+  RABBITMQ_ERLANG_COOKIE: "47EFF3BB-4786-46E0-A5BB-58455B3C2CB4"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: contrail-config-zookeeper
+  namespace: kube-system
+data:
+  ZOOKEEPER_PORT: "2181"
+  ZOOKEEPER_PORTS: "2888:3888"
+  ZOOKEEPER_NODES: {{ contrail_nodes }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: contrail-analytics-zookeeper
+  namespace: kube-system
+data:
+  ZOOKEEPER_PORT: "2182"
+  ZOOKEEPER_PORTS: "4888:5888"
+  ZOOKEEPER_NODES: {{ contrail_nodes }}
+# Containers section
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-manager-config
+  namespace: kube-system
+data:
+  KUBERNETES_API_SERVER: {{ api_vip | ipaddr }}
+  KUBERNETES_API_SECURE_PORT: "6443"
+  K8S_TOKEN_FILE: "/tmp/serviceaccount/token"
+# Containers section
+# Meta information section

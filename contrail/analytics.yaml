@@ -1,0 +1,132 @@
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: contrail-analytics
+  namespace: kube-system
+  labels:
+    app: contrail-analytics
+spec:
+  template:
+    metadata:
+      labels:
+        app: contrail-analytics
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: "opencontrail.org/controller"
+                operator: Exists
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      hostNetwork: true
+      containers:
+      - name: contrail-analytics-api
+        image: "docker.io/opencontrailnightly/contrail-analytics-api:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-analytics-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: analytics-logs
+      - name: contrail-analytics-collector
+        image: "docker.io/opencontrailnightly/contrail-analytics-collector:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-analytics-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: analytics-logs
+      - name: contrail-analytics-alarm-gen
+        image: "docker.io/opencontrailnightly/contrail-analytics-alarm-gen:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-analytics-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: analytics-logs
+      - name: contrail-analytics-query-engine
+        image: "docker.io/opencontrailnightly/contrail-analytics-query-engine:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-analytics-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: analytics-logs
+      - name: contrail-analytics-snmp-collector
+        image: "docker.io/opencontrailnightly/contrail-analytics-snmp-collector:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-analytics-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: analytics-logs
+      - name: contrail-analytics-topology
+        image: "docker.io/opencontrailnightly/contrail-analytics-topology:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-analytics-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: analytics-logs
+      - name: contrail-analytics-nodemgr
+        image: "docker.io/opencontrailnightly/contrail-nodemgr:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: nodemgr-config
+        - configMapRef:
+            name: contrail-analytics-zookeeper
+        env:
+        - name: NODE_TYPE
+          value: analytics
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: analytics-logs
+        - mountPath: /mnt
+          name: docker-unix-socket
+      volumes:
+      - name: analytics-logs
+        hostPath:
+          path: /var/log/contrail/analytics
+      - name: docker-unix-socket
+        hostPath:
+          path: /var/run

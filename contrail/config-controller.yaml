@@ -1,0 +1,105 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: contrail-controller-config
+  namespace: kube-system
+  labels:
+    app: contrail-controller-config
+spec:
+  template:
+    metadata:
+      labels:
+        app: contrail-controller-config
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: "opencontrail.org/controller"
+                operator: Exists
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      hostNetwork: true
+      containers:
+      - name: contrail-controller-config-api
+        image: "docker.io/opencontrailnightly/contrail-controller-config-api:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-config-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: config-logs
+      - name: contrail-controller-config-devicemgr
+        image: "docker.io/opencontrailnightly/contrail-controller-config-devicemgr:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-config-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: config-logs
+      - name: contrail-controller-config-schema
+        image: "docker.io/opencontrailnightly/contrail-controller-config-schema:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-config-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: config-logs
+      - name: contrail-controller-config-svcmonitor
+        image: "docker.io/opencontrailnightly/contrail-controller-config-svcmonitor:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-config-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: config-logs
+      - name: contrail-controller-config-nodemgr
+        image: "docker.io/opencontrailnightly/contrail-nodemgr:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: nodemgr-config
+        - configMapRef:
+            name: contrail-config-zookeeper
+        env:
+        - name: NODE_TYPE
+          value: config
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: config-logs
+        - mountPath: /mnt
+          name: docker-unix-socket
+      volumes:
+      - name: config-logs
+        hostPath:
+          path: /var/log/contrail/config
+      - name: docker-unix-socket
+        hostPath:
+          path: /var/run

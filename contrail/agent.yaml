@@ -1,0 +1,126 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: contrail-agent
+  namespace: kube-system
+  labels:
+    app: contrail-agent
+spec:
+  template:
+    metadata:
+      labels:
+        app: contrail-agent
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: "opencontrail.org/controller"
+                operator: DoesNotExist
+      automountServiceAccountToken: false
+      hostNetwork: true
+      initContainers:
+      - name: contrail-vrouter-kernel-init
+        image: "docker.io/opencontrailnightly/contrail-vrouter-kernel-init:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        volumeMounts:
+        - mountPath: /usr/src
+          name: usr-src
+        - mountPath: /lib/modules
+          name: lib-modules
+      - name: contrail-kubernetes-cni-init
+        image: "docker.io/opencontrailnightly/contrail-kubernetes-cni-init:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        volumeMounts:
+        - mountPath: /var/lib/contrail
+          name: var-lib-contrail
+        - mountPath: /host/etc_cni
+          name: etc-cni
+        - mountPath: /host/opt_cni_bin
+          name: opt-cni-bin
+        - mountPath: /host/log_cni
+          name: var-log-contrail-cni
+        - mountPath: /var/log/contrail
+          name: agent-logs
+      containers:
+      - name: contrail-vrouter-agent
+        image: "docker.io/opencontrailnightly/contrail-vrouter-agent:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: agent-logs
+        - mountPath: /usr/src
+          name: usr-src
+        - mountPath: /lib/modules
+          name: lib-modules
+        - mountPath: /var/lib/contrail
+          name: var-lib-contrail
+        - mountPath: /var/crashes
+          name: var-crashes
+        - mountPath: /tmp/serviceaccount
+          name: pod-secret
+      - name: contrail-agent-nodemgr
+        image: "docker.io/opencontrailnightly/contrail-nodemgr:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: nodemgr-config
+        env:
+        - name: NODE_TYPE
+          value: vrouter
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: agent-logs
+        - mountPath: /mnt
+          name: docker-unix-socket
+      volumes:
+      - name: docker-unix-socket
+        hostPath:
+          path: /var/run
+      - name: pod-secret
+        secret:
+          secretName: contrail-kube-manager-token
+      - name: usr-src
+        hostPath:
+          path: /usr/src
+      - name: lib-modules
+        hostPath:
+          path: /lib/modules
+      - name: var-lib-contrail
+        hostPath:
+          path: /var/lib/contrail
+      - name: var-crashes
+        hostPath:
+          path: /var/contrail/crashes
+      - name: etc-cni
+        hostPath:
+          path: /etc/cni
+      - name: opt-cni-bin
+        hostPath:
+          path: /opt/cni/bin
+      - name: var-log-contrail-cni
+        hostPath:
+          path: /var/log/contrail/cni
+      - name: agent-logs
+        hostPath:
+          path: /var/log/contrail/agent

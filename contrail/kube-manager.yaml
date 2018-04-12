@@ -1,0 +1,51 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: contrail-kube-manager
+  namespace: kube-system
+  labels:
+    app: contrail-kube-manager
+spec:
+  template:
+    metadata:
+      labels:
+        app: contrail-kube-manager
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: "opencontrail.org/controller" 
+                operator: Exists
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      automountServiceAccountToken: false
+      hostNetwork: true
+      containers:
+      - name: contrail-kube-manager
+        image: "docker.io/opencontrailnightly/contrail-kubernetes-kube-manager:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: kube-manager-config
+        - configMapRef:
+            name: contrail-config-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: kube-manager-logs
+        - mountPath: /tmp/serviceaccount
+          name: pod-secret
+      volumes:
+      - name: kube-manager-logs
+        hostPath:
+          path: /var/log/contrail/kube-manager
+      - name: pod-secret
+        secret:
+          secretName: contrail-kube-manager-token

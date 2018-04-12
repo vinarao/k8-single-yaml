@@ -1,0 +1,57 @@
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: contrail-controller-webui
+  namespace: kube-system
+  labels:
+    app: contrail-controller-webui
+spec:
+  template:
+    metadata:
+      labels:
+        app: contrail-controller-webui
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: "opencontrail.org/controller"
+                operator: Exists
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      hostNetwork: true
+      containers:
+      - name: contrail-controller-webui-job
+        image: "docker.io/opencontrailnightly/contrail-controller-webui-job:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-config-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: webui-logs
+      - name: contrail-controller-webui-web
+        image: "docker.io/opencontrailnightly/contrail-controller-webui-web:newton-master-53"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        - configMapRef:
+            name: contrail-config-zookeeper
+        volumeMounts:
+        - mountPath: /var/log/contrail
+          name: webui-logs
+      volumes:
+      - name: webui-logs
+        hostPath:
+          path: /var/log/contrail/webui
