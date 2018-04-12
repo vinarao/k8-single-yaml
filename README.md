@@ -17,12 +17,18 @@ kubectl apply -f contrail/
 
 
 
+
+
+################### Steps to Install K8's on Centos #########################
+
 Steps to Install Kubernetes on Centos 
+
 #!/bin/bash -eux
 
 sudo yum update -y
 
 #Add basic repo to sources.list
+
 sudo bash -c 'cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
@@ -85,5 +91,3 @@ echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 sleep 2
 systemctl restart docker && systemctl enable docker
 systemctl  restart kubelet && systemctl enable kubelet
-
-
