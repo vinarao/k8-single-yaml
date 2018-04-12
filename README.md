@@ -19,11 +19,13 @@ kubectl apply -f contrail/
 
 
 
-################### Steps to Install K8's on Centos #########################
+################ **INSTALL KUBERNESTES ON CENTOS**##########
 
 Steps to Install Kubernetes on Centos 
 
-#!/bin/bash -eux
+
+
+##### INSTALL PRE_REQUISITES ########
 
 sudo yum update -y
 
@@ -76,9 +78,10 @@ sudo -E yum-config-manager \
 
 sudo yum -y install docker-ee
 
-#Install kubernetes
+#########**Install kubernetes**###########
+
 sleep 2
-<<<<<<< HEAD
+
 yum install docker kubeadm kubectl kubelet -y
 
 sleep 2
