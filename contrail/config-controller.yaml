@@ -25,7 +25,7 @@ spec:
       hostNetwork: true
       containers:
       - name: contrail-controller-config-api
-        image: "docker.io/opencontrailnightly/contrail-controller-config-api:newton-master-53"
+        image: "{{ contrail_registry }}/contrail-controller-config-api:{{ contrail_container_tag }}"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -38,7 +38,7 @@ spec:
         - mountPath: /var/log/contrail
           name: config-logs
       - name: contrail-controller-config-devicemgr
-        image: "docker.io/opencontrailnightly/contrail-controller-config-devicemgr:newton-master-53"
+        image: "{{ contrail_registry }}/contrail-controller-config-devicemgr:{{ contrail_container_tag }}"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -51,7 +51,7 @@ spec:
         - mountPath: /var/log/contrail
           name: config-logs
       - name: contrail-controller-config-schema
-        image: "docker.io/opencontrailnightly/contrail-controller-config-schema:newton-master-53"
+        image: "{{ contrail_registry }}/contrail-controller-config-schema:{{ contrail_container_tag }}"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -64,7 +64,7 @@ spec:
         - mountPath: /var/log/contrail
           name: config-logs
       - name: contrail-controller-config-svcmonitor
-        image: "docker.io/opencontrailnightly/contrail-controller-config-svcmonitor:newton-master-53"
+        image: "{{ contrail_registry }}/contrail-controller-config-svcmonitor:{{ contrail_container_tag }}"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -77,7 +77,7 @@ spec:
         - mountPath: /var/log/contrail
           name: config-logs
       - name: contrail-controller-config-nodemgr
-        image: "docker.io/opencontrailnightly/contrail-nodemgr:newton-master-53"
+        image: "{{ contrail_registry }}/contrail-nodemgr:{{ contrail_container_tag }}"
         imagePullPolicy: ""
         securityContext:
           privileged: true
