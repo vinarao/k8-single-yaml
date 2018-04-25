@@ -78,4 +78,4 @@ Contrail Installed
 
 ````
 For Kubernetes Install 
-Refer [Installing K8's on CentOS](kubernetes/Install_K8)
+Refer [Installing K8's on CentOS](kubernetes/Install_K8.md)
