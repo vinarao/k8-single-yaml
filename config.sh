@@ -39,3 +39,4 @@ envsubst < $f > ".generated/$(basename $f)"
 done
 echo " Installing Contrail" 
 kubectl apply -f .generated/
+echo "Contrail Installed"
