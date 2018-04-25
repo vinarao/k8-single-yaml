@@ -26,7 +26,7 @@ spec:
       hostNetwork: true
       containers:
       - name: contrail-analytics-api
-        image: "$contrail_registry/contrail-analytics-api:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-analytics-api:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -39,7 +39,7 @@ spec:
         - mountPath: /var/log/contrail
           name: analytics-logs
       - name: contrail-analytics-collector
-        image: "$contrail_registry/contrail-analytics-collector:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-analytics-collector:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -52,7 +52,7 @@ spec:
         - mountPath: /var/log/contrail
           name: analytics-logs
       - name: contrail-analytics-alarm-gen
-        image: "$contrail_registry/contrail-analytics-alarm-gen:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-analytics-alarm-gen:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -65,7 +65,7 @@ spec:
         - mountPath: /var/log/contrail
           name: analytics-logs
       - name: contrail-analytics-query-engine
-        image: "$contrail_registry/contrail-analytics-query-engine:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-analytics-query-engine:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -78,7 +78,7 @@ spec:
         - mountPath: /var/log/contrail
           name: analytics-logs
       - name: contrail-analytics-snmp-collector
-        image: "$contrail_registry/contrail-analytics-snmp-collector:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-analytics-snmp-collector:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -91,7 +91,7 @@ spec:
         - mountPath: /var/log/contrail
           name: analytics-logs
       - name: contrail-analytics-topology
-        image: "$contrail_registry/contrail-analytics-topology:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-analytics-topology:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -104,7 +104,7 @@ spec:
         - mountPath: /var/log/contrail
           name: analytics-logs
       - name: contrail-analytics-nodemgr
-        image: "$contrail_registry/contrail-nodemgr:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-nodemgr:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true

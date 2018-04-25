@@ -22,7 +22,7 @@ spec:
       hostNetwork: true
       initContainers:
       - name: contrail-vrouter-kernel-init
-        image: "$contrail_registry/contrail-vrouter-kernel-init:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-vrouter-kernel-init:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -35,7 +35,7 @@ spec:
         - mountPath: /lib/modules
           name: lib-modules
       - name: contrail-kubernetes-cni-init
-        image: "$contrail_registry/contrail-kubernetes-cni-init:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-kubernetes-cni-init:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -55,7 +55,7 @@ spec:
           name: agent-logs
       containers:
       - name: contrail-vrouter-agent
-        image: "$contrail_registry/contrail-vrouter-agent:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-vrouter-agent:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -76,7 +76,7 @@ spec:
         - mountPath: /tmp/serviceaccount
           name: pod-secret
       - name: contrail-agent-nodemgr
-        image: "$contrail_registry/contrail-nodemgr:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-nodemgr:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true

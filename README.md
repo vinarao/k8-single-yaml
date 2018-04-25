@@ -3,24 +3,39 @@
 Single YAML to install Contrail CNI components on a Kubernetes System 
 
 
-Once you clone this repository You can update the contrail/default.yaml as below 
+Once you clone this repository You can run the below script to install Contrail
+
+./config.sh  
 
 ```
-#(IP address of Nodes where contrail control components are installed)
+##############**SINGLE NODE**#############
+./config.sh 
+Hello, root.  This script will install contrail on a Kubernetes cluster
 
-contrail_nodes= 10.87.65.232,10.87.65.233,10.87.65.234 
+Contrail Nodes (This is a list of nodes on which Contrail Components are installed)
+eg for Single Node- Contrail Nodes: 10.87.65.231
+eg for HA- Contrail Nodes: 10.87.65.231,10.87.65.232,10.87.65.233
+Contrail Nodes [ENTER]:10.87.65.231 
 
-#(Interface on which Vrouter is installed) 
+Please enter the Kubernetes Master VIP IP(In case of Single Master use Master node IP)
+eg Kubernetes VIP: 10.87.65.231
+Kubernetes VIP [ENTER]: 10.87.65.231
 
-vrouter_physical_interface= eth1
+Please enter the Physical Interface for the VROUTER
+ eg Vrouter Interface: eth2
+Vrouter Interface [ENTER]: eth2
 
-#(VIP IP of Kubernetes API server)
+Please enter the Registry for the Contrail Docker images
+eg contrail_registry: docker.io/opencontrailnightly
+Disclaimer: Please do not enter the http/https urls but docker friendly url
+contrail_registry [ENTER]: docker.io/opencontrailnightly
 
-api_vip:10.87.65.251 
-```
-Steps to install once values are updated
+Please enter the Contrail Image Tag(Version) that you want installed
+eg contrail_tag: newton-master-44
+contrail_tag [ENTER]:newton-master-44
 
-`kubectl apply -f contrail/`
+Installing Contrail
+
 
 
 

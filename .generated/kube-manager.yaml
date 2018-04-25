@@ -26,7 +26,7 @@ spec:
       hostNetwork: true
       containers:
       - name: contrail-kube-manager
-        image: "$contrail_registry/contrail-kubernetes-kube-manager:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-kubernetes-kube-manager:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true

@@ -25,7 +25,7 @@ spec:
       hostNetwork: true
       containers:
       - name: zookeeper
-        image: "$contrail_registry/contrail-external-zookeeper:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-external-zookeeper:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -45,7 +45,7 @@ spec:
         hostPath:
           path: /var/log/contrail/zookeeper
       - name: contrail-configdb
-        image: "$contrail_registry/contrail-external-cassandra:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-external-cassandra:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -65,7 +65,7 @@ spec:
         hostPath:
           path: /var/log/contrail/configdb
       - name: rabbitmq
-        image: "$contrail_registry/contrail-external-rabbitmq:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-external-rabbitmq:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true

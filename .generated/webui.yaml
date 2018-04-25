@@ -26,7 +26,7 @@ spec:
       hostNetwork: true
       containers:
       - name: contrail-controller-webui-job
-        image: "$contrail_registry/contrail-controller-webui-job:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-controller-webui-job:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -39,7 +39,7 @@ spec:
         - mountPath: /var/log/contrail
           name: webui-logs
       - name: contrail-controller-webui-web
-        image: "$contrail_registry/contrail-controller-webui-web:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-controller-webui-web:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true

@@ -1,15 +1,15 @@
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
-  name: contrail-controller-config
+  name: contrail-controller-control
   namespace: kube-system
   labels:
-    app: contrail-controller-config
+    app: contrail-controller-control
 spec:
   template:
     metadata:
       labels:
-        app: contrail-controller-config
+        app: contrail-controller-control
     spec:
       affinity:
         nodeAffinity:
@@ -24,8 +24,8 @@ spec:
         effect: NoSchedule
       hostNetwork: true
       containers:
-      - name: contrail-controller-config-api
-        image: "$contrail_registry/contrail-controller-config-api:$contrail_container_tag"
+      - name: contrail-controller-control
+        image: "docker.io/opencontrailnightly/contrail-controller-control-control:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -36,9 +36,22 @@ spec:
             name: contrail-config-zookeeper
         volumeMounts:
         - mountPath: /var/log/contrail
-          name: config-logs
-      - name: contrail-controller-config-devicemgr
-        image: "$contrail_registry/contrail-controller-config-devicemgr:$contrail_container_tag"
+          name: control-logs
+      - name: contrail-controller-control-dns
+        image: "docker.io/opencontrailnightly/contrail-controller-control-dns:newton-master-44"
+        imagePullPolicy: ""
+        securityContext:
+          privileged: true
+        envFrom:
+        - configMapRef:
+            name: env
+        volumeMounts:
+        - mountPath: /etc/contrail
+          name: dns-config
+        - mountPath: /var/log/contrail
+          name: control-logs
+      - name: contrail-controller-control-named
+        image: "docker.io/opencontrailnightly/contrail-controller-control-named:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -47,37 +60,15 @@ spec:
             name: env
         - configMapRef:
             name: contrail-config-zookeeper
-        volumeMounts:
-        - mountPath: /var/log/contrail
-          name: config-logs
-      - name: contrail-controller-config-schema
-        image: "$contrail_registry/contrail-controller-config-schema:$contrail_container_tag"
-        imagePullPolicy: ""
         securityContext:
           privileged: true
-        envFrom:
-        - configMapRef:
-            name: env
-        - configMapRef:
-            name: contrail-config-zookeeper
         volumeMounts:
+        - mountPath: /etc/contrail
+          name: dns-config
         - mountPath: /var/log/contrail
-          name: config-logs
-      - name: contrail-controller-config-svcmonitor
-        image: "$contrail_registry/contrail-controller-config-svcmonitor:$contrail_container_tag"
-        imagePullPolicy: ""
-        securityContext:
-          privileged: true
-        envFrom:
-        - configMapRef:
-            name: env
-        - configMapRef:
-            name: contrail-config-zookeeper
-        volumeMounts:
-        - mountPath: /var/log/contrail
-          name: config-logs
-      - name: contrail-controller-config-nodemgr
-        image: "$contrail_registry/contrail-nodemgr:$contrail_container_tag"
+          name: control-logs
+      - name: contrail-controller-nodemgr
+        image: "docker.io/opencontrailnightly/contrail-nodemgr:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -90,16 +81,18 @@ spec:
             name: contrail-config-zookeeper
         env:
         - name: NODE_TYPE
-          value: config
+          value: control
         volumeMounts:
         - mountPath: /var/log/contrail
-          name: config-logs
+          name: control-logs
         - mountPath: /mnt
           name: docker-unix-socket
       volumes:
-      - name: config-logs
+      - name: control-logs
         hostPath:
-          path: /var/log/contrail/config
+          path: /var/log/contrail/control
       - name: docker-unix-socket
         hostPath:
           path: /var/run
+      - name: dns-config
+        emptyDir: {}

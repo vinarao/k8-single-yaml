@@ -26,7 +26,7 @@ spec:
       hostNetwork: true
       containers:
       - name: contrail-analyticsdb
-        image: "$contrail_registry/contrail-external-cassandra:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-external-cassandra:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -46,7 +46,7 @@ spec:
         hostPath:
           path: /var/log/contrail/analyticsdb
       - name: kafka
-        image: "$contrail_registry/contrail-external-kafka:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-external-kafka:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -63,7 +63,7 @@ spec:
         hostPath:
           path: /var/lib/contrail/kafka-logs
 - name: zookeeper
-        image: "$contrail_registry/contrail-external-zookeeper:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-external-zookeeper:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -88,7 +88,7 @@ spec:
         hostPath:
           path: /var/lib/analytics_zookeeper_datalog
       - name: contrail-analytics-nodemgr
-        image: "$contrail_registry/contrail-nodemgr:$contrail_container_tag"
+        image: "docker.io/opencontrailnightly/contrail-nodemgr:newton-master-44"
         imagePullPolicy: ""
         securityContext:
           privileged: true
