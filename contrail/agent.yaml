@@ -17,7 +17,7 @@ spec:
             nodeSelectorTerms:
             - matchExpressions:
               - key: "opencontrail.org/controller"
-                operator: DoesNotExist
+                operator: Exists
       automountServiceAccountToken: false
       hostNetwork: true
       initContainers:

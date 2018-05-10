@@ -17,12 +17,12 @@ spec:
             nodeSelectorTerms:
             - matchExpressions:
               - key: "opencontrail.org/controller"
-                operator: DoesNotExist
+                operator: Exists
       automountServiceAccountToken: false
       hostNetwork: true
       initContainers:
       - name: contrail-vrouter-kernel-init
-        image: "docker.io/opencontrailnightly/contrail-vrouter-kernel-init:newton-master-44"
+        image: "ci-repo.englab.juniper.net:5000/contrail-vrouter-kernel-init:5.0-51"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -35,7 +35,7 @@ spec:
         - mountPath: /lib/modules
           name: lib-modules
       - name: contrail-kubernetes-cni-init
-        image: "docker.io/opencontrailnightly/contrail-kubernetes-cni-init:newton-master-44"
+        image: "ci-repo.englab.juniper.net:5000/contrail-kubernetes-cni-init:5.0-51"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -55,13 +55,13 @@ spec:
           name: agent-logs
       containers:
       - name: contrail-vrouter-agent
-        image: "docker.io/opencontrailnightly/contrail-vrouter-agent:newton-master-44"
+        image: "ci-repo.englab.juniper.net:5000/contrail-vrouter-agent:5.0-51"
         imagePullPolicy: ""
         securityContext:
           privileged: true
         envFrom:
         - configMapRef:
-            name: env
+          name: env
         volumeMounts:
         - mountPath: /var/log/contrail
           name: agent-logs
@@ -76,7 +76,7 @@ spec:
         - mountPath: /tmp/serviceaccount
           name: pod-secret
       - name: contrail-agent-nodemgr
-        image: "docker.io/opencontrailnightly/contrail-nodemgr:newton-master-44"
+        image: "ci-repo.englab.juniper.net:5000/contrail-nodemgr:5.0-51"
         imagePullPolicy: ""
         securityContext:
           privileged: true
