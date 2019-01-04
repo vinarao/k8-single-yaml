@@ -18,12 +18,11 @@ data:
   METADATA_PROXY_SECRET: contrail
   PHYSICAL_INTERFACE: $vrouter_physical_interface 
   RABBITMQ_NODES: $contrail_nodes 
-  RABBITMQ_NODE_PORT: 5672
+  RABBITMQ_NODE_PORT: "5672"
   REDIS_NODES: $contrail_nodes 
-  VROUTER_GATEWAY: 
   WEBUI_NODES: $contrail_nodes 
   ZOOKEEPER_NODES: $contrail_nodes 
-  KUBERNETES_API_SECURE_PORT: 6443
+  KUBERNETES_API_SECURE_PORT: "6443"
 
 ---
 apiVersion: v1

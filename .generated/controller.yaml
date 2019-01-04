@@ -25,7 +25,7 @@ spec:
       hostNetwork: true
       containers:
       - name: contrail-controller-control
-        image: "docker.io/opencontrailnightly/contrail-controller-control-control:newton-master-44"
+        image: "ci-repo.englab.juniper.net:5000/contrail-controller-control-control:5.0-51"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -38,7 +38,7 @@ spec:
         - mountPath: /var/log/contrail
           name: control-logs
       - name: contrail-controller-control-dns
-        image: "docker.io/opencontrailnightly/contrail-controller-control-dns:newton-master-44"
+        image: "ci-repo.englab.juniper.net:5000/contrail-controller-control-dns:5.0-51"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -51,7 +51,7 @@ spec:
         - mountPath: /var/log/contrail
           name: control-logs
       - name: contrail-controller-control-named
-        image: "docker.io/opencontrailnightly/contrail-controller-control-named:newton-master-44"
+        image: "ci-repo.englab.juniper.net:5000/contrail-controller-control-named:5.0-51"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -68,7 +68,7 @@ spec:
         - mountPath: /var/log/contrail
           name: control-logs
       - name: contrail-controller-nodemgr
-        image: "docker.io/opencontrailnightly/contrail-nodemgr:newton-master-44"
+        image: "ci-repo.englab.juniper.net:5000/contrail-nodemgr:5.0-51"
         imagePullPolicy: ""
         securityContext:
           privileged: true

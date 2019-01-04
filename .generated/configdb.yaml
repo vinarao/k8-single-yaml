@@ -25,18 +25,13 @@ spec:
       hostNetwork: true
       containers:
       - name: zookeeper
-        image: "docker.io/opencontrailnightly/contrail-external-zookeeper:newton-master-44"
+        image: "ci-repo.englab.juniper.net:5000/contrail-external-zookeeper:5.0-51"
         imagePullPolicy: ""
         securityContext:
           privileged: true
         envFrom:
         - configMapRef:
             name: contrail-config-zookeeper
-        volumeMounts:
-        - mountPath: /var/lib/zookeeper
-          name: zookeeper-data
-        - mountPath: /var/log/zookeeper
-          name: zookeeper-logs
       volumes:
       - name: zookeeper-data
         hostPath:
@@ -45,7 +40,7 @@ spec:
         hostPath:
           path: /var/log/contrail/zookeeper
       - name: contrail-configdb
-        image: "docker.io/opencontrailnightly/contrail-external-cassandra:newton-master-44"
+        image: "ci-repo.englab.juniper.net:5000/contrail-external-cassandra:5.0-51"
         imagePullPolicy: ""
         securityContext:
           privileged: true
@@ -65,7 +60,7 @@ spec:
         hostPath:
           path: /var/log/contrail/configdb
       - name: rabbitmq
-        image: "docker.io/opencontrailnightly/contrail-external-rabbitmq:newton-master-44"
+        image: "ci-repo.englab.juniper.net:5000/contrail-external-rabbitmq:5.0-51"
         imagePullPolicy: ""
         securityContext:
           privileged: true
